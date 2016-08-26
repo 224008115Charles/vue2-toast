@@ -158,7 +158,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Public
 	    showToast: function showToast(message, options) {
 	      this._addToast(message, options);
-	      this._moveToast();
+	      this.moveToast();
 	
 	      return this;
 	    },
@@ -166,6 +166,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	      this.options = Object.assign(this.options, options || {});
 	
 	      return this;
+	    },
+	    moveToast: function moveToast(toast) {
+	      var maxToasts = this.options.maxToasts > 0 ? this.options.maxToasts : 9999;
+	
+	      // Moving || removing old toasts
+	      this.toasts = this.toasts.reduceRight(function (prev, toast, i) {
+	        if (toast.isDestroyed) {
+	          return prev;
+	        }
+	
+	        if (i + 1 >= maxToasts) {
+	          return prev;
+	        }
+	
+	        return [toast].concat(prev);
+	      }, []);
 	    },
 	    // Private
 	    _addToast: function _addToast(message) {
@@ -182,22 +198,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        options: options,
 	        isDestroyed: false
 	      });
-	    },
-	    _moveToast: function _moveToast(toast) {
-	      var maxToasts = this.options.maxToasts > 0 ? this.options.maxToasts : 9999;
-	
-	      // moving||removing old toasts
-	      this.toasts = this.toasts.reduceRight(function (prev, toast, i) {
-	        if (toast.isDestroyed) {
-	          return prev;
-	        }
-	
-	        if (i + 1 >= maxToasts) {
-	          return prev;
-	        }
-	
-	        return [toast].concat(prev);
-	      }, []);
 	    },
 	    _updateClassesOfPosition: function _updateClassesOfPosition(position) {
 	      return position.split(' ').reduce(function (prev, val) {
@@ -251,8 +251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	var defaultOptions = {
 	  theme: 'default', // info warning error success
-	  timeLife: 5000,
-	  closeBtn: false
+	  timeLife: 5000
 	};
 	
 	exports['default'] = {
@@ -297,9 +296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      _this.isShow = true;
 	    }, 50);
 	
-	    if (!this.options.closeBtn) {
-	      this._startLazyAutoDestroy();
-	    }
+	    this._startLazyAutoDestroy();
 	  },
 	  detached: function detached() {
 	    clearTimeout(this.timerDestroy);
@@ -309,8 +306,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    remove: function remove() {
 	      this._clearTimer();
 	      this.destroyed = true;
+	      // There is a bug, refer to https://github.com/vuejs/vue/issues/3510
+	      this.$parent.moveToast.apply(this.$parent);
 	      this.$remove().$destroy();
-	
 	      return this;
 	    },
 	    // Private
@@ -325,16 +323,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    _clearTimer: function _clearTimer() {
 	      if (this.timerDestroy) {
 	        clearTimeout(this.timerDestroy);
-	      }
-	    },
-	    _startTimer: function _startTimer() {
-	      if (!this.options.closeBtn) {
-	        this._startLazyAutoDestroy();
-	      }
-	    },
-	    _stopTimer: function _stopTimer() {
-	      if (!this.options.closeBtn) {
-	        this._clearTimer();
 	      }
 	    }
 	  }
@@ -352,7 +340,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"vue-toast_container\"\n     @mouseover=\"_stopTimer\"\n     @mouseleave=\"_startTimer\"\n     :style=\"style\"\n     :class=\"[theme]\"\n     v-show=\"isShow\"\n     transition>\n  <div class=\"vue-toast_message\">\n    <span v-html=\"message\"></span>\n    <span class=\"vue-toast_close-btn\"\n          v-if=\"options.closeBtn\"\n          @click=\"remove\">\n    </span>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"vue-toast_container\"\n     :style=\"style\"\n     :class=\"[theme]\"\n     v-show=\"isShow\"\n     transition>\n  <div class=\"vue-toast_message\">\n    <span v-html=\"message\"></span>\n    <span class=\"vue-toast_close-btn\"\n          @click=\"remove\">\n    </span>\n  </div>\n</div>\n";
 
 /***/ },
 /* 12 */

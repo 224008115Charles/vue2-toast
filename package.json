@@ -1,8 +1,8 @@
 {
   "name": "vue-toast",
-  "version": "2.0.3",
+  "version": "3.0.1",
   "description": "toasts for vuejs",
-  "main": "./dist/vue-toast.min.js",
+  "main": "./dist/vue-toast.js",
   "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^6.1.0",

@@ -3,8 +3,7 @@ import template from './template.html'
 
 const defaultOptions = {
   theme: 'default', // info warning error success
-  timeLife: 5000,
-  closeBtn: false,
+  timeLife: 5000
 }
 
 export default {
@@ -47,9 +46,7 @@ export default {
       this.isShow = true
     }, 50)
 
-    if (!this.options.closeBtn) {
-      this._startLazyAutoDestroy()
-    }
+    this._startLazyAutoDestroy()
   },
   detached() {
     clearTimeout(this.timerDestroy)
@@ -59,8 +56,9 @@ export default {
     remove() {
       this._clearTimer()
       this.destroyed = true
+      // There is a bug, refer to https://github.com/vuejs/vue/issues/3510
+      this.$parent.moveToast.apply(this.$parent);
       this.$remove().$destroy()
-
       return this
     },
     // Private
@@ -73,16 +71,6 @@ export default {
     _clearTimer() {
       if (this.timerDestroy) {
         clearTimeout(this.timerDestroy)
-      }
-    },
-    _startTimer() {
-      if (!this.options.closeBtn) {
-        this._startLazyAutoDestroy()
-      }
-    },
-    _stopTimer() {
-      if (!this.options.closeBtn) {
-        this._clearTimer()
       }
     }
   }

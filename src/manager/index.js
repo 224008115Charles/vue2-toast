@@ -29,7 +29,7 @@ export default {
     // Public
     showToast(message, options) {
       this._addToast(message, options)
-      this._moveToast()
+      this.moveToast()
 
       return this
     },
@@ -37,6 +37,24 @@ export default {
       this.options = Object.assign(this.options, options || {})
 
       return this
+    },
+    moveToast(toast) {
+      const maxToasts = this.options.maxToasts > 0
+        ? this.options.maxToasts
+        : 9999
+
+      // Moving || removing old toasts
+      this.toasts = this.toasts.reduceRight((prev, toast, i) => {
+        if (toast.isDestroyed) {
+          return prev
+        }
+
+        if (i + 1 >= maxToasts) {
+          return prev
+        }
+
+        return [toast].concat(prev)
+      }, [])
     },
     // Private
     _addToast(message, options = {}) {
@@ -51,24 +69,6 @@ export default {
         options,
         isDestroyed: false
       })
-    },
-    _moveToast(toast) {
-      const maxToasts = this.options.maxToasts > 0
-        ? this.options.maxToasts
-        : 9999
-
-      // moving||removing old toasts
-      this.toasts = this.toasts.reduceRight((prev, toast, i) => {
-        if (toast.isDestroyed) {
-          return prev
-        }
-
-        if (i + 1 >= maxToasts) {
-          return prev
-        }
-
-        return [toast].concat(prev)
-      }, [])
     },
     _updateClassesOfPosition(position) {
       return position.split(' ').reduce((prev, val) => {
