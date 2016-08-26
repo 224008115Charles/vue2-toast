@@ -7,14 +7,14 @@ How does it work? Look it [here](http://astaroverov.github.io/#!/example/vue-toa
 
 Global
 ```
-<link rel="stylesheet" href="./path/to/vue-toast.min.css" charset="utf-8">
-<script src='./path/to/vue-toast.min.js'></script>
+<link rel="stylesheet" href="./path/to/vue-toast.css" charset="utf-8">
+<script src='./path/to/vue-toast.js'></script>
 // it available in window.vueToast
 ```
 
 Import:
 ```
-import 'vue-toast/dist/vue-toast.min.css'
+import 'vue-toast/dist/vue-toast.css'
 import VueToast from 'vue-toast'
 
 

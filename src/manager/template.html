@@ -2,6 +2,7 @@
   <vue-toast
       v-for="toast in toasts"
       :message="toast.message"
+      :tips="toast.tips"
       :options="toast.options"
       :destroyed.sync="toast.isDestroyed"
       :position="$index"
