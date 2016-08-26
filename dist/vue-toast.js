@@ -229,7 +229,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 7 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"vue-toast-manager_container\" :class=\"classesOfPosition\">\n  <vue-toast\n      v-for=\"toast in toasts\"\n      :message=\"toast.message\"\n      :options=\"toast.options\"\n      :destroyed.sync=\"toast.isDestroyed\"\n      :position=\"$index\"\n    ></vue-toast>\n</div>\n";
+	module.exports = "<div class=\"vue-toast-manager_container\" :class=\"classesOfPosition\">\n  <vue-toast\n      v-for=\"toast in toasts\"\n      :message=\"toast.message\"\n      :tips=\"toast.tips\"\n      :options=\"toast.options\"\n      :destroyed.sync=\"toast.isDestroyed\"\n      :position=\"$index\"\n    ></vue-toast>\n</div>\n";
 
 /***/ },
 /* 8 */
@@ -250,6 +250,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _templateHtml2 = _interopRequireDefault(_templateHtml);
 	
 	var defaultOptions = {
+	  tips: '',
 	  theme: 'default', // info warning error success
 	  timeLife: 5000
 	};
@@ -340,7 +341,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"vue-toast_container\"\n     :style=\"style\"\n     :class=\"[theme]\"\n     v-show=\"isShow\"\n     transition>\n  <div class=\"vue-toast_message\">\n    <span v-html=\"message\"></span>\n    <span class=\"vue-toast_close-btn\"\n          @click=\"remove\">\n    </span>\n  </div>\n</div>\n";
+	module.exports = "<div class=\"vue-toast_container\"\n     :style=\"style\"\n     :class=\"[theme, {\n       'has-tips': options.tips\n     }]\"\n     v-show=\"isShow\"\n     transition>\n  <div class=\"vue-toast_message\">\n    <span v-html=\"message\"></span>\n    <span class=\"vue-toast_tips\" v-if=\"options.tips\">{{options.tips}}</span>\n    <span class=\"vue-toast_close-btn\"\n          @click=\"remove\">\n    </span>\n  </div>\n</div>\n";
 
 /***/ },
 /* 12 */

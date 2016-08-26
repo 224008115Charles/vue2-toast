@@ -2,6 +2,7 @@ import './style.css'
 import template from './template.html'
 
 const defaultOptions = {
+  tips: '',
   theme: 'default', // info warning error success
   timeLife: 5000
 }

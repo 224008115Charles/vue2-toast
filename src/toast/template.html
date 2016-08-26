@@ -1,10 +1,13 @@
 <div class="vue-toast_container"
      :style="style"
-     :class="[theme]"
+     :class="[theme, {
+       'has-tips': options.tips
+     }]"
      v-show="isShow"
      transition>
   <div class="vue-toast_message">
     <span v-html="message"></span>
+    <span class="vue-toast_tips" v-if="options.tips">{{options.tips}}</span>
     <span class="vue-toast_close-btn"
           @click="remove">
     </span>
