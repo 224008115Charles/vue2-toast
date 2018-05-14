@@ -1,6 +1,3 @@
-import './style.css'
-import template from './template.html'
-
 const defaultOptions = {
   tips: '',
   theme: 'default', // info warning error success
@@ -8,7 +5,6 @@ const defaultOptions = {
 }
 
 export default {
-  template: template,
   props: {
     message: {
       required: true
@@ -18,15 +14,11 @@ export default {
       required: true
     },
     destroyed: {
-      twoWay: true,
       type: Boolean,
       required: true
     },
     options: {
-      type: Object,
-      coerce(options) {
-        return Object.assign({}, defaultOptions, options)
-      },
+      type: Object
     },
   },
   data() {
@@ -35,39 +27,42 @@ export default {
     }
   },
   computed: {
+    opts() {
+      return Object.assign({}, defaultOptions, this.options)
+    },
     theme() {
-      return '_' + this.options.theme
+      return '_' + this.opts.theme
     },
     style() {
-      return `transform: translateY(${this.options.directionOfJumping}${this.position * 100}%)`
+      return `transform: translateY(${this.opts.directionOfJumping}${this.position * 100}%)`
     }
   },
-  ready() {
+  mounted() {
     setTimeout(() => {
       this.isShow = true
     }, 50)
 
     this._startLazyAutoDestroy()
   },
-  detached() {
+  beforeDestroy() {
     clearTimeout(this.timerDestroy)
   },
   methods: {
     // Public
     remove() {
       this._clearTimer()
-      this.destroyed = true
+      this.$emit('destroy')
       // There is a bug, refer to https://github.com/vuejs/vue/issues/3510
       this.$parent.moveToast.apply(this.$parent);
-      this.$remove().$destroy()
+      this.$el.remove()
       return this
     },
     // Private
     _startLazyAutoDestroy() {
       this._clearTimer()
       this.timerDestroy = setTimeout(() => {
-        this.$remove().$destroy()
-      }, this.options.timeLife)
+        this.$el.remove()
+      }, this.opts.timeLife)
     },
     _clearTimer() {
       if (this.timerDestroy) {

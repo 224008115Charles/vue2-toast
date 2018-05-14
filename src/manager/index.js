@@ -1,8 +1,6 @@
-import './style.css'
-import template from './template.html'
-import vueToast from '../toast'
+import vueToast from '../toast/index.vue'
 
-import {isNumber} from '../utils.js'
+import { isNumber } from '../utils.js'
 
 const defaultOptions = {
   maxToasts: 6,
@@ -10,7 +8,6 @@ const defaultOptions = {
 }
 
 export default {
-  template: template,
   data() {
     return {
       toasts: [],

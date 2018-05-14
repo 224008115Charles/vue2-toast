@@ -1,10 +1,11 @@
 <div class="vue-toast-manager_container" :class="classesOfPosition">
   <vue-toast
-      v-for="toast in toasts"
+      v-for="(toast, index) in toasts"
       :message="toast.message"
       :tips="toast.tips"
       :options="toast.options"
-      :destroyed.sync="toast.isDestroyed"
-      :position="$index"
+      :destroyed="toast.isDestroyed"
+      :position="index"
+      @destroy="toast.isDestroyed = true"
     ></vue-toast>
 </div>
