@@ -8,6 +8,7 @@
     "autoprefixer": "^8.5.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "2",
     "postcss": "^6.0.22",
